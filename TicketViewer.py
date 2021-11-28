@@ -60,7 +60,7 @@ def create_config():
 def populate_ticket_array(data):
     global ticketsArray
     # Creates Ticket objects with the data from the tickets table in the data response
-    for t in data["tickets"]:
+    for t in range(len(data["tickets"])):
         ticketsArray.append(Ticket(data["tickets"][t]["requester_id"],
                                    data["tickets"][t]["assignee_id"],
                                    data["tickets"][t]["subject"],
@@ -98,6 +98,8 @@ def main():
     data = response.json()
 
     populate_ticket_array(data)
+
+    print_ticket_table()
 
 
 # Runs main function
