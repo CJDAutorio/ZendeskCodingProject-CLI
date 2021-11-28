@@ -195,10 +195,13 @@ def ticket_list_control():
         elif userInput.lower() == "s":
             print("Ticket number:")
             selectTicketNumber = input()
-            if 0 < int(selectTicketNumber) < len(ticketsArray) + 1:
-                ticket_view(int(selectTicketNumber) - 1)
-            else:
-                print("Error: Invalid ticket number!")
+            try:
+                if 0 < int(selectTicketNumber) < len(ticketsArray) + 1:
+                    ticket_view(int(selectTicketNumber) - 1)
+                else:
+                    print("Error: Invalid ticket number!")
+            except ValueError:
+                print("Error: Invalid input, number expected!")
         # Exit
         elif userInput.lower() == "exit":
             print("Thank you for using my ticket viewer. Exiting...")
