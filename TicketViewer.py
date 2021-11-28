@@ -133,22 +133,27 @@ def ticket_list_control():
     userInput = ""
     currentPage = 1
 
-    print("\nLoading ticket list...\n")
+    print("\nLoading ticket list...")
 
     # HTTP get request
     responseParameters = {"per_page": "25", "page": currentPage}
     response = requests.get(url, auth=(username, apiToken), params=responseParameters)
 
     while userInput != "exit":
-        print("\n**** Tickets for user: " + config.get("USERINFORMATION", "Username") + " ****\n"
-              "Current page: " + str(currentPage))
-
-        # Check for HTTP codes other than 200
-        if response.status_code != 200:
+        # Check for HTTP codes
+        if response.status_code == 200:
+            print("Status:", response.status_code, " - OK!")
+        elif response.status_code == 429:
+            print("Status:", response.status_code, " - Too many next page requests! Time until you can request next "
+                                                   "page: ", response.headers['retry-after'])
+        else:
             print("Status:", response.status_code, "Problem with the request, config file may have errors. If needed, "
                                                    "you can delete the config.ini file and run the program again to "
                                                    "generate a new config.ini. Exiting.")
             exit()
+
+        print("\n**** Tickets for user: " + config.get("USERINFORMATION", "Username") + " ****\n"
+              "Current page: " + str(currentPage))
 
         # Decode the JSON response into a dictionary and use the data
         data = response.json()
@@ -219,4 +224,5 @@ def main():
 
 
 # Runs main function
-main()
+if __name__ == "__main__":
+    main()
