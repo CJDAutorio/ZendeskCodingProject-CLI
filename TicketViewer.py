@@ -120,13 +120,20 @@ def ticket_view(ticketIndex):
     global ticketsArray
     ticket = ticketsArray[ticketIndex]
     print("\n*** Ticket View ***")
-    print("Ticket ID: " + ticket.get_ID())
+    print("ID: " + str(ticket.get_ticketID()).ljust(10) + "Priority: " + str(ticket.get_priority()))
+    print("Requester ID: " + str(ticket.get_requesterID()).ljust(20) + "Assignee ID: " + str(ticket.get_assigneeID()))
+    print("Subject: " + ticket.get_subject().ljust(80) + "Tags: " + str(ticket.get_tags()))
+    print("\nDescription:\n" + ticket.get_description() + "\n")
+    print("Created at: " + str(ticket.get_createdAt()).ljust(30) + "Updated at: " + str(ticket.get_updatedAt()))
+    input("\nPress enter to return to the ticket list.")
 
 
 # Controls ticket list view
 def ticket_list_control():
     userInput = ""
     currentPage = 1
+
+    print("\nLoading ticket list...\n")
 
     # HTTP get request
     responseParameters = {"per_page": "25", "page": currentPage}
@@ -151,10 +158,10 @@ def ticket_list_control():
         print_ticket_table()
 
         print("\nControls:\n"
-              "'q':\t\t\t\tPrevious page\n"
-              "'e':\t\t\t\tNext page\n"
-              "Any number 1-25:\tOpen ticket at specified number (seen in 'Ticket No.' column\n"
-              "'exit':\t\t\t\tExits the program\n")
+              "'q':\tPrevious page\n"
+              "'e':\tNext page\n"
+              "'s':\tOpen ticket at specified number (seen in 'Ticket No.' column)\n"
+              "'exit':\tExits the program\n")
 
         userInput = input()
         # Previous page
@@ -180,14 +187,21 @@ def ticket_list_control():
             else:
                 print("Error: No next page!")
         # Select a ticket
-        elif isinstance(userInput, int) and 0 < userInput < len(data):
-            print("PLACEHOLDER FOR TICKET SELECTION FUNCTION")
+        elif userInput.lower() == "s":
+            print("Ticket number:")
+            selectTicketNumber = input()
+            if 0 < int(selectTicketNumber) < len(ticketsArray) + 1:
+                ticket_view(int(selectTicketNumber) - 1)
+            else:
+                print("Error: Invalid ticket number!")
         # Exit
-        elif userInput == "exit":
+        elif userInput.lower() == "exit":
             print("Thank you for using my ticket viewer. Exiting...")
             exit()
         else:
             print("Error: Invalid input!")
+
+        print("\nLoading ticket list...\n")
 
 
 # Main function of program
