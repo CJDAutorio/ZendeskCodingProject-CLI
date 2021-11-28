@@ -1,6 +1,7 @@
 import requests
 import configparser
 from os.path import exists
+import json
 
 # Global parameters
 config = configparser.ConfigParser()
@@ -29,11 +30,6 @@ def create_config():
         config.write(configfile)
 
 
-# Convert the data response into an array of ticket objects
-#def data_to_array(data):
-
-
-
 # Main function of program
 def main():
     # If no config file exists, create config.ini and end program. Else, read config and continue
@@ -55,10 +51,6 @@ def main():
 
     # Decode the JSON response into a dictionary and use the data
     data = response.json()
-
-    group_list = data['groups']
-    for group in group_list:
-        print(group['name'])
 
 
 # Runs main function
