@@ -68,7 +68,7 @@ def populate_ticket_array(data):
                                    data["tickets"][t]["tags"]))
 
 
-# Functionality for controlling ticket table view
+# Prints table of current tickets (ticket numbers start at i + 1)
 def print_ticket_table():
     global ticketsArray
     print("**** Tickets for user: " + config.get("USERINFORMATION", "Username") + " ****\n")
