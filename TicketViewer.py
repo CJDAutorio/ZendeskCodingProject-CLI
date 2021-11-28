@@ -71,7 +71,8 @@ def populate_ticket_array(data):
 # Prints table of current tickets (ticket numbers start at i + 1)
 def print_ticket_table():
     global ticketsArray
-    print("Ticket No.".ljust(16) + "Requester ID".ljust(20) + "Assignee ID".ljust(20) + "Subject".ljust(80) + "Tags".ljust(20))
+    print("Ticket No.".ljust(16) + "Requester ID".ljust(20) + "Assignee ID".ljust(20) + "Subject".ljust(
+        80) + "Tags".ljust(20))
     print("-------------".ljust(16) +
           "-----------------".ljust(20) +
           "-----------------".ljust(20) +
@@ -91,19 +92,6 @@ def print_ticket_table():
 def ticket_list_control():
     print("**** Tickets for user: " + config.get("USERINFORMATION", "Username") + " ****\n")
 
-
-
-# Main function of program
-def main():
-    # If no config file exists, create config.ini and end program. Else, read config and continue
-    if not exists("config.ini"):
-        create_config()
-        print("Config file not found! Config file has been created at program root. Please enter your information"
-              "into the file config.ini and relaunch the program.")
-        exit()
-    else:
-        read_config()
-
     # HTTP get request
     response = requests.get(url, auth=(username, apiToken))
 
@@ -120,6 +108,20 @@ def main():
     populate_ticket_array(data)
 
     print_ticket_table()
+
+
+# Main function of program
+def main():
+    # If no config file exists, create config.ini and end program. Else, read config and continue
+    if not exists("config.ini"):
+        create_config()
+        print("Config file not found! Config file has been created at program root. Please enter your information"
+              "into the file config.ini and relaunch the program.")
+        exit()
+    else:
+        read_config()
+
+    ticket_list_control()
 
 
 # Runs main function
