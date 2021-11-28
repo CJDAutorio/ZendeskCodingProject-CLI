@@ -11,6 +11,7 @@ apiToken = ""
 ticketsArray = []
 
 
+# Ticket class to easily store individual Ticket information
 class Ticket:
     def __init__(self, requesterID, assigneeID, subject, description, tags):
         self.requesterID = requesterID
@@ -58,12 +59,18 @@ def create_config():
 # Populates global array with Ticket objects
 def populate_ticket_array(data):
     global ticketsArray
+    # Creates Ticket objects with the data from the tickets table in the data response
     for t in data["tickets"]:
         ticketsArray.append(Ticket(data["tickets"][t]["requester_id"],
                                    data["tickets"][t]["assignee_id"],
                                    data["tickets"][t]["subject"],
                                    data["tickets"][t]["description"],
                                    data["tickets"][t]["tags"]))
+
+
+# Functionality for controlling ticket table view
+def print_ticket_table():
+    print("Tickets for user: " + config.get("USERINFORMATION", "Username"))
 
 
 # Main function of program
