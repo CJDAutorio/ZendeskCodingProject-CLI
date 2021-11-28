@@ -59,6 +59,7 @@ def create_config():
 # Populates global array with Ticket objects
 def populate_ticket_array(data):
     global ticketsArray
+    ticketsArray.clear()
     # Creates Ticket objects with the data from the tickets table in the data response
     for t in range(len(data["tickets"])):
         ticketsArray.append(Ticket(data["tickets"][t]["requester_id"],
@@ -71,6 +72,8 @@ def populate_ticket_array(data):
 # Prints table of current tickets (ticket numbers start at i + 1)
 def print_ticket_table():
     global ticketsArray
+
+    # Prints head of table
     print("Ticket No.".ljust(16) + "Requester ID".ljust(20) + "Assignee ID".ljust(20) + "Subject".ljust(
         80) + "Tags".ljust(20))
     print("-------------".ljust(16) +
@@ -90,32 +93,69 @@ def print_ticket_table():
 
 # Controls ticket list view
 def ticket_list_control():
-    print("\n**** Tickets for user: " + config.get("USERINFORMATION", "Username") + " ****\n")
-
-    # Initial HTTP get request
+    userInput = ""
     currentPage = 1
+
+    # HTTP get request
     responseParameters = {"per_page": "25", "page": currentPage}
     response = requests.get(url, auth=(username, apiToken), params=responseParameters)
 
-    # Check for HTTP codes other than 200
-    if response.status_code != 200:
-        print("Status:", response.status_code, "Problem with the request, config file may have errors. If needed, "
-                                               "you can delete the config.ini file and run the program again to "
-                                               "generate a new config.ini. Exiting.")
-        exit()
+    while userInput != "exit":
+        print("\n**** Tickets for user: " + config.get("USERINFORMATION", "Username") + " ****\n"
+              "Current page: " + str(currentPage))
 
-    # Decode the JSON response into a dictionary and use the data
-    data = response.json()
+        # Check for HTTP codes other than 200
+        if response.status_code != 200:
+            print("Status:", response.status_code, "Problem with the request, config file may have errors. If needed, "
+                                                   "you can delete the config.ini file and run the program again to "
+                                                   "generate a new config.ini. Exiting.")
+            exit()
 
-    populate_ticket_array(data)
+        # Decode the JSON response into a dictionary and use the data
+        data = response.json()
 
-    print_ticket_table()
+        populate_ticket_array(data)
 
-    print("\nControls:\n"
-          "'q':\t\t\t\tPrevious page\n"
-          "'e':\t\t\t\tNext page\n"
-          "Any number 1-25:\tOpen ticket at specified number (seen in 'Ticket No.' column\n"
-          "'exit':\t\t\t\tExits the program")
+        print_ticket_table()
+
+        print("\nControls:\n"
+              "'q':\t\t\t\tPrevious page\n"
+              "'e':\t\t\t\tNext page\n"
+              "Any number 1-25:\tOpen ticket at specified number (seen in 'Ticket No.' column\n"
+              "'exit':\t\t\t\tExits the program\n")
+
+        userInput = input()
+        # Previous page
+        if userInput.lower() == "q":
+            if data["previous_page"] is not None:
+                # Decrements page number
+                currentPage -= 1
+                responseParametersUpdate = {"page": currentPage}
+                responseParameters.update(responseParametersUpdate)
+                # Updates response
+                response = requests.get(url, auth=(username, apiToken), params=responseParameters)
+            else:
+                print("Error: No previous page!")
+        # Next page
+        elif userInput.lower() == "e":
+            if data["next_page"] is not None:
+                # Increments page number
+                currentPage += 1
+                responseParametersUpdate = {"page": currentPage}
+                responseParameters.update(responseParametersUpdate)
+                # Updates response
+                response = requests.get(url, auth=(username, apiToken), params=responseParameters)
+            else:
+                print("Error: No next page!")
+        # Select a ticket
+        elif isinstance(userInput, int) and 0 < userInput < len(data):
+            print("PLACEHOLDER FOR TICKET SELECTION FUNCTION")
+        # Exit
+        elif userInput == "exit":
+            print("Thank you for using my ticket viewer. Exiting...")
+            exit()
+        else:
+            print("Error: Invalid input!")
 
 
 # Main function of program
