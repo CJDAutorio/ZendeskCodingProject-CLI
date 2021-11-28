@@ -8,6 +8,31 @@ config = configparser.ConfigParser()
 url = ""
 username = ""
 apiToken = ""
+ticketsArray = []
+
+
+class Ticket:
+    def __init__(self, requesterID, assigneeID, subject, description, tags):
+        self.requesterID = requesterID
+        self.assigneeID = assigneeID
+        self.subject = subject
+        self.description = description
+        self.tags = tags
+
+    def get_requesterID(self):
+        return self.requesterID
+
+    def get_assigneeID(self):
+        return self.assigneeID
+
+    def get_subject(self):
+        return self.subject
+
+    def get_description(self):
+        return self.description
+
+    def get_tags(self):
+        return self.tags
 
 
 # Reads config file
@@ -30,6 +55,17 @@ def create_config():
         config.write(configfile)
 
 
+# Populates global array with Ticket objects
+def populate_ticket_array(data):
+    global ticketsArray
+    for t in data["tickets"]:
+        ticketsArray.append(Ticket(data["tickets"][t]["requester_id"],
+                                   data["tickets"][t]["assignee_id"],
+                                   data["tickets"][t]["subject"],
+                                   data["tickets"][t]["description"],
+                                   data["tickets"][t]["tags"]))
+
+
 # Main function of program
 def main():
     # If no config file exists, create config.ini and end program. Else, read config and continue
@@ -46,11 +82,15 @@ def main():
 
     # Check for HTTP codes other than 200
     if response.status_code != 200:
-        print('Status:', response.status_code, 'Problem with the request. Exiting.')
+        print('Status:', response.status_code, 'Problem with the request, config file may have errors. If needed, '
+                                               'you can delete the config.ini file and run the program again to '
+                                               'generate a new config.ini. Exiting.')
         exit()
 
     # Decode the JSON response into a dictionary and use the data
     data = response.json()
+
+    populate_ticket_array(data)
 
 
 # Runs main function
