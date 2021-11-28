@@ -90,7 +90,7 @@ def print_ticket_table():
 
 # Controls ticket list view
 def ticket_list_control():
-    print("**** Tickets for user: " + config.get("USERINFORMATION", "Username") + " ****\n")
+    print("\n**** Tickets for user: " + config.get("USERINFORMATION", "Username") + " ****\n")
 
     # Initial HTTP get request
     currentPage = 1
@@ -99,9 +99,9 @@ def ticket_list_control():
 
     # Check for HTTP codes other than 200
     if response.status_code != 200:
-        print('Status:', response.status_code, 'Problem with the request, config file may have errors. If needed, '
-                                               'you can delete the config.ini file and run the program again to '
-                                               'generate a new config.ini. Exiting.')
+        print("Status:", response.status_code, "Problem with the request, config file may have errors. If needed, "
+                                               "you can delete the config.ini file and run the program again to "
+                                               "generate a new config.ini. Exiting.")
         exit()
 
     # Decode the JSON response into a dictionary and use the data
@@ -110,6 +110,12 @@ def ticket_list_control():
     populate_ticket_array(data)
 
     print_ticket_table()
+
+    print("\nControls:\n"
+          "'q':\t\t\t\tPrevious page\n"
+          "'e':\t\t\t\tNext page\n"
+          "Any number 1-25:\tOpen ticket at specified number (seen in 'Ticket No.' column\n"
+          "'exit':\t\t\t\tExits the program")
 
 
 # Main function of program
