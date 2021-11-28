@@ -92,8 +92,10 @@ def print_ticket_table():
 def ticket_list_control():
     print("**** Tickets for user: " + config.get("USERINFORMATION", "Username") + " ****\n")
 
-    # HTTP get request
-    response = requests.get(url, auth=(username, apiToken))
+    # Initial HTTP get request
+    currentPage = 1
+    responseParameters = {"per_page": "25", "page": currentPage}
+    response = requests.get(url, auth=(username, apiToken), params=responseParameters)
 
     # Check for HTTP codes other than 200
     if response.status_code != 200:
