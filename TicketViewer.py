@@ -70,7 +70,22 @@ def populate_ticket_array(data):
 
 # Functionality for controlling ticket table view
 def print_ticket_table():
-    print("Tickets for user: " + config.get("USERINFORMATION", "Username"))
+    global ticketsArray
+    print("**** Tickets for user: " + config.get("USERINFORMATION", "Username") + " ****\n")
+    print("Ticket No.".ljust(16) + "Requester ID".ljust(20) + "Assignee ID".ljust(20) + "Subject".ljust(80) + "Tags".ljust(20))
+    print("-------------".ljust(16) +
+          "-----------------".ljust(20) +
+          "-----------------".ljust(20) +
+          "----------------------------------------------------------------------------".ljust(80) +
+          "----------------------------------".ljust(20))
+
+    # Prints information in tickets in a table format
+    for i in range(len(ticketsArray)):
+        print(str(i + 1).ljust(16) +
+              str(ticketsArray[i].get_requesterID()).ljust(20) +
+              str(ticketsArray[i].get_assigneeID()).ljust(20) +
+              str(ticketsArray[i].get_subject()).ljust(80) +
+              str(ticketsArray[i].get_tags()).ljust(20))
 
 
 # Main function of program
