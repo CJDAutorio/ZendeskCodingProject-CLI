@@ -13,12 +13,16 @@ ticketsArray = []
 
 # Ticket class to easily store individual Ticket information
 class Ticket:
-    def __init__(self, requesterID, assigneeID, subject, description, tags):
+    def __init__(self, requesterID, assigneeID, subject, description, tags, createdAt, updatedAt, priority, status):
         self.requesterID = requesterID
         self.assigneeID = assigneeID
         self.subject = subject
         self.description = description
         self.tags = tags
+        self.createdAt = createdAt
+        self.updatedAt = updatedAt
+        self.priority = priority
+        self.status = status
 
     def get_requesterID(self):
         return self.requesterID
@@ -34,6 +38,18 @@ class Ticket:
 
     def get_tags(self):
         return self.tags
+
+    def get_createdAt(self):
+        return self.createdAt
+
+    def get_updatedAt(self):
+        return self.updatedAt
+
+    def get_priority(self):
+        return self.priority
+
+    def get_status(self):
+        return self.status
 
 
 # Reads config file
@@ -66,7 +82,11 @@ def populate_ticket_array(data):
                                    data["tickets"][t]["assignee_id"],
                                    data["tickets"][t]["subject"],
                                    data["tickets"][t]["description"],
-                                   data["tickets"][t]["tags"]))
+                                   data["tickets"][t]["tags"],
+                                   data["tickets"][t]["created_at"],
+                                   data["tickets"][t]["updated_at"],
+                                   data["tickets"][t]["priority"],
+                                   data["tickets"][t]["status"],))
 
 
 # Prints table of current tickets (ticket numbers start at i + 1)
@@ -89,6 +109,13 @@ def print_ticket_table():
               str(ticketsArray[i].get_assigneeID()).ljust(20) +
               str(ticketsArray[i].get_subject()).ljust(80) +
               str(ticketsArray[i].get_tags()).ljust(20))
+
+
+def ticket_view(ticketIndex):
+    global ticketsArray
+    ticket = ticketsArray[ticketIndex]
+    print("\n*** Ticket View ***")
+
 
 
 # Controls ticket list view
