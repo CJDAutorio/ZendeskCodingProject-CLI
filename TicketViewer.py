@@ -13,7 +13,7 @@ ticketsArray = []
 
 # Ticket class to easily store individual Ticket information
 class Ticket:
-    def __init__(self, requesterID, assigneeID, subject, description, tags, createdAt, updatedAt, priority, status):
+    def __init__(self, requesterID, assigneeID, subject, description, tags, createdAt, updatedAt, priority, status, ticketID):
         self.requesterID = requesterID
         self.assigneeID = assigneeID
         self.subject = subject
@@ -23,6 +23,7 @@ class Ticket:
         self.updatedAt = updatedAt
         self.priority = priority
         self.status = status
+        self.ticketID = ticketID
 
     def get_requesterID(self):
         return self.requesterID
@@ -50,6 +51,9 @@ class Ticket:
 
     def get_status(self):
         return self.status
+
+    def get_ticketID(self):
+        return self.ticketID
 
 
 # Reads config file
@@ -86,7 +90,8 @@ def populate_ticket_array(data):
                                    data["tickets"][t]["created_at"],
                                    data["tickets"][t]["updated_at"],
                                    data["tickets"][t]["priority"],
-                                   data["tickets"][t]["status"],))
+                                   data["tickets"][t]["status"],
+                                   data["tickets"][t]["id"]))
 
 
 # Prints table of current tickets (ticket numbers start at i + 1)
@@ -115,7 +120,7 @@ def ticket_view(ticketIndex):
     global ticketsArray
     ticket = ticketsArray[ticketIndex]
     print("\n*** Ticket View ***")
-
+    print("Ticket ID: " + ticket.get_ID())
 
 
 # Controls ticket list view
