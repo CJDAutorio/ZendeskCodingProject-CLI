@@ -8,5 +8,6 @@
 `username = user_email@email.com`  
 `api token = apitoken`  
  3. Open a command prompt (type "cmd" into the Windows search).
- 4. In the command prompt, enter `"{directory to the python file}\venv\Scripts\python.exe" TicketViewer.py`
+ 4. In the command prompt, enter  
+ `"{directory to the python file}\venv\Scripts\python.exe" TicketViewer.py`
  5. Follow the instructions printed by the program
