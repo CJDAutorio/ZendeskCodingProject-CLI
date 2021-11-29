@@ -217,7 +217,7 @@ def main():
     # If no config file exists, create config.ini and end program. Else, read config and continue
     if not exists("config.ini"):
         create_config()
-        print("Config file not found! Config file has been created at program root. Please enter your information"
+        print("Config file not found! Config file has been created at program root. Please enter your information "
               "into the file config.ini and relaunch the program.")
         exit()
     else:
