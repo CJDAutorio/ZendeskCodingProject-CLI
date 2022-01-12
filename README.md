@@ -1,6 +1,6 @@
 # Zendesk Coding Challenge
 ### About
-My project for the Zendesk Coding Challenge for the 2022 Summer Internship program. This program is a CLI application which allows a user to connect to the Zendesk API and view tickets and ticket information.
+My project for the Zendesk Coding Challenge for the 2022 Zendesk Summer Internship program. This program is a CLI application which allows a user to connect to the Zendesk API and view tickets and ticket information.
 
 ### Installation
 
